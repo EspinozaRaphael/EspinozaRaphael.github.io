@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TE AMO LORE ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      font-family: 'Courier New', monospace;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #mensaje {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: pink;
+      font-size: 3em;
+      text-shadow: 0 0 10px hotpink;
+      z-index: 1;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 600px) {
+      #mensaje {
+        font-size: 2em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="mensaje">TE AMO LORE ❤️</div>
+  <canvas id="matrix"></canvas>
+
+  <script>
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    // Ajusta tamaño del canvas
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    // Caracteres que caerán (todos son "Te amo")
+    const palabras = Array(256).fill("Te amo");
+
+    const fontSize = 18;
+    const columns = canvas.width / fontSize;
+
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      // Fondo negro semi-transparente para efecto rastro
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "pink";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = "TE AMO";
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        // Reinicia gota al azar
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 50);
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
